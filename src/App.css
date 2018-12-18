@@ -30,3 +30,36 @@
     transform: rotate(360deg);
   }
 }
+
+.shirt-section {
+  position:absolute;
+  overflow:hidden;
+}
+
+.shirt-section.selected {
+  border:2px solid black;
+}
+
+.image-container {
+  margin:auto;
+  position:relative;
+  display:inline-block;
+  border:1px solid black
+}
+
+.upload-button {
+  position:absolute;
+  z-index:10;
+  left: 0;
+  top:0;
+  width:80px;
+}
+
+.click-watcher {
+  width:100%;
+  height: 100%;
+}
+
+.hidden {
+  opacity: 0;
+}
