@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  display:flex;
 }
 
 .App-logo {
@@ -41,10 +41,7 @@
 }
 
 .image-container {
-  margin:auto;
   position:relative;
-  display:inline-block;
-  border:1px solid black
 }
 
 .upload-button {
@@ -62,4 +59,27 @@
 
 .hidden {
   opacity: 0;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: black;
+  color: white;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between
+}
+
+.sidebar-main {
+  flex-grow: 2;
+}
+
+.primary-button {
+  margin: 20px;
+  width: 210px;
+  height: 30px;
+  border-radius: 5px;
+  font-size: 14px;
+  background: rgb(255,184,0);
+  border: none;
 }

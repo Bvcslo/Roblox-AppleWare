@@ -1,66 +1,23 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import template from './images/shirt-template.png';
 import './App.css';
 import { toJpeg } from 'html-to-image';
 import download from 'downloadjs';
-
-class ShirtSection extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      imgUrl: null
-    }
-  }
-  fileSelected = (ev) => {
-    var reader = new FileReader();
-
-    reader.onload = (e) => {
-        this.setState({
-          imgUrl: e.target.result
-        });
-    };
-
-    // read the image file as a data URL.
-    reader.readAsDataURL(ev.currentTarget.files[0]);
-    // console.log()
-  }
-
-  handleClick = (ev) => {
-    console.log('handled click')
-  } 
-
-  render() {
-    const {left, top, width, height, onClick, id, selected} = this.props
-    const {imgUrl} = this.state
-
-    return (
-      <div className={`shirt-section ${selected ? 'selected' : ''}`} id={id} onClick={onClick} style={{
-        left,
-        top,
-        width,
-        height
-      }}>
-        {selected ? <input type="file" id="files" onChange={this.fileSelected} className="upload-button" /> : ''}
-            
-        {imgUrl ? <img id="image" src={imgUrl} style={{maxWidth:'100%'}} /> : null}
-          
-      </div>
-    )
-  }
-}
+import SelectionArea from './components/SelectionArea';
+import Sidebar from './components/Sidebar';
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
       selectedSection: null,
-      showTemplate: true
+      showTemplate: true,
+      imgUrls: {}
     }
   }
 
   selectArea = (ev) => {
-    console.log('selecting area')
     this.setState({
       selectedSection: ev.currentTarget
     })
@@ -87,36 +44,60 @@ class App extends Component {
     });
   }
 
+  uploadImage = (imgUrl) => {
+    let imgUrls = this.state.imgUrls;
+    const {selectedSection} = this.state
+    const selectedId = selectedSection && selectedSection.id
+
+    imgUrls[selectedId] = imgUrl
+    console.log('2', imgUrls)
+    
+    this.setState({
+      imgUrls: imgUrls
+    })
+  }
+
   render() {
     const {selectedSection, showTemplate} = this.state
     const selectedId = selectedSection && selectedSection.id
     let areas = []
+    let areaNames = [
+      'right-arm-L',
+      'right-arm-B',
+      'right-arm-R',
+      'right-arm-F',
+      'left-arm-L',
+      'left-arm-B',
+      'left-arm-R',
+      'left-arm-F',
+    ]
     for(let i = 0; i < 8; i++) {
       let offset = i > 3 ? 44 : 19; 
-      areas.push(<ShirtSection key={`section_${i}`} selected={selectedId === `SECTION_${i}`} id={`SECTION_${i}`} onClick={this.selectArea} left={66*i+offset} top={355} width={64} height={128} />
-      )
+      let name = areaNames[i]
+      areas.push(<SelectionArea imgUrl={this.state.imgUrls[name]} key={name} selected={selectedId === name} id={name} onClick={this.selectArea} left={66*i+offset} top={355} width={64} height={128} />)
     }
 
     areas = areas.concat([
-      <ShirtSection selected={selectedId === "DOWN"} id="DOWN" onClick={this.selectArea} left={231} top={204} width={128} height={64} />,
-      <ShirtSection selected={selectedId === "UP"} id="UP" onClick={this.selectArea} left={231} top={8} width={128} height={64} />,
+      <SelectionArea key='DOWN' imgUrl={this.state.imgUrls['DOWN']} selected={selectedId === "DOWN"} id="DOWN" onClick={this.selectArea} left={231} top={204} width={128} height={64} />,
+      <SelectionArea key='UP' imgUrl={this.state.imgUrls['UP']} selected={selectedId === "UP"} id="UP" onClick={this.selectArea} left={231} top={8} width={128} height={64} />,
           
-      <ShirtSection selected={selectedId === "FRONT"} id="FRONT" onClick={this.selectArea} left={231} top={74} width={128} height={128} />,
-      <ShirtSection selected={selectedId === "BACK"} id="BACK" onClick={this.selectArea} left={427} top={74} width={128} height={128} />,
+      <SelectionArea key='FRONT' imgUrl={this.state.imgUrls['FRONT']} selected={selectedId === "FRONT"} id="FRONT" onClick={this.selectArea} left={231} top={74} width={128} height={128} />,
+      <SelectionArea key='BACK' imgUrl={this.state.imgUrls['BACK']} selected={selectedId === "BACK"} id="BACK" onClick={this.selectArea} left={427} top={74} width={128} height={128} />,
           
-      <ShirtSection selected={selectedId === "R"} id="R" onClick={this.selectArea} left={165} top={74} width={64} height={128} />,
-      <ShirtSection selected={selectedId === "L"} id="L" onClick={this.selectArea} left={361} top={74} width={64} height={128} />
+      <SelectionArea key='R' imgUrl={this.state.imgUrls['R']} selected={selectedId === "R"} id="R" onClick={this.selectArea} left={165} top={74} width={64} height={128} />,
+      <SelectionArea key='L' imgUrl={this.state.imgUrls['L']} selected={selectedId === "L"} id="L" onClick={this.selectArea} left={361} top={74} width={64} height={128} />
     ])
 
 
     return (
       <div className="App">
+        <Sidebar onUploadImage={this.uploadImage} downloadImage={this.downloadImage} selectedArea={selectedId} />
         <div className="image-container">
-          <img src={template} id="templateImage" onClick={this.clearSelection} className={!showTemplate ? 'hidden' : ''} />
+          <img src={template} alt="" id="templateImage" onClick={this.clearSelection} className={!showTemplate ? 'hidden' : ''} />
           {areas}
         </div>
 
-        <button className="hide-show" onClick={this.downloadImage}>Download Image</button>
+        
         
       </div>
     );
