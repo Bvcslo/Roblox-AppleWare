@@ -6,6 +6,7 @@
     "downloadjs": "^1.4.7",
     "html-to-image": "^0.1.0",
     "react": "^16.6.3",
+    "react-color": "^2.17.0",
     "react-dom": "^16.6.3",
     "react-images-upload": "^1.2.3",
     "react-scripts": "2.1.1"

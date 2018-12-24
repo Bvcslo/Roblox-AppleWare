@@ -1,27 +1,32 @@
 import React, { Component } from 'react';
 
 class SelectionArea extends Component {
-    constructor(props) {
-      super(props)
-    }
    
-  
-    render() {
-      const {left, top, width, height, onClick, id, selected, imgUrl} = this.props
-        console.log('imgUrls is', imgUrl)
-      return (
-        <div className={`shirt-section ${selected ? 'selected' : ''}`} id={id} onClick={onClick} style={{
-          left,
-          top,
-          width,
-          height
-        }}>
-              
-          {imgUrl ? <img id="image" alt="" src={imgUrl} style={{maxWidth:'100%'}} /> : null}
-            
-        </div>
-      )
+    handleClick = (ev) => {
+        this.props.onClick(this.props.data.name);
     }
+     
+    render() {
+        const {left, top, width, height, id, imgUrl, backgroundColor} = this.props.data
+        const { selected } = this.props;
+        return (
+            <div className={`shirt-section ${selected ? 'selected' : ''}`} 
+            id={id} 
+            onClick={this.handleClick} 
+            style={{
+                left,
+                top,
+                width,
+                height,
+                backgroundColor
+                }}
+            >
+                
+            {imgUrl ? <img id="image" alt="" src={imgUrl} style={{maxWidth:'100%'}} /> : null}
+                
+            </div>
+        )
+        }
   }
 
   export default SelectionArea

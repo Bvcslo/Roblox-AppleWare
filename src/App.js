@@ -10,23 +10,96 @@ import Sidebar from './components/Sidebar';
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      selectedSection: null,
-      showTemplate: true,
-      imgUrls: {}
+
+    let areaNames = [
+      'right-arm-L',
+      'right-arm-B',
+      'right-arm-R',
+      'right-arm-F',
+      'left-arm-L',
+      'left-arm-B',
+      'left-arm-R',
+      'left-arm-F',
+    ]
+    let areas = [];
+
+    for(let i = 0; i < areaNames.length; i++) {
+      let offset = i > 3 ? 44 : 19; 
+      let name = areaNames[i]
+      areas.push({
+        name:name,
+        left: 66*i+offset, 
+        top: 355, 
+        width:64, 
+        height:128
+      })
     }
+    
+    areas = areas.concat([
+      {
+        name: 'DOWN',
+        left:231,
+        top:204, 
+        width:128, 
+        height:64
+      },
+      {
+        name: 'UP',
+        left:231,
+        top:8, 
+        width:128, 
+        height:64
+      },
+      {
+        name: 'FRONT',
+        left:231,
+        top:74, 
+        width:128, 
+        height:128
+      },
+      {
+        name: 'BACK',
+        left:427,
+        top:74, 
+        width:128, 
+        height:128
+      },
+      {
+        name: 'R',
+        left:165,
+        top:74, 
+        width:64, 
+        height:128
+      },
+      {
+        name: 'L',
+        left:361,
+        top:74, 
+        width:64, 
+        height:128
+      }
+    ])
+
+    this.state = {
+      selectedArea: null,
+      showTemplate: true,
+      areas: areas
+    }
+
+
   }
 
-  selectArea = (ev) => {
+  selectArea = (areaId) => {
+    const area = this.state.areas.find((area) => area.name === areaId)
     this.setState({
-      selectedSection: ev.currentTarget
+      selectedArea: area
     })
     // ev.preventDefault();
   }
 
   clearSelection = (ev) => {
     this.setState({
-      selectedSection: null
+      selectedArea: null
     })
   }
 
@@ -44,54 +117,54 @@ class App extends Component {
     });
   }
 
-  uploadImage = (imgUrl) => {
-    let imgUrls = this.state.imgUrls;
-    const {selectedSection} = this.state
-    const selectedId = selectedSection && selectedSection.id
-
-    imgUrls[selectedId] = imgUrl
-    console.log('2', imgUrls)
-    
+  setPropOnSelectedArea(update) {
+    let i = 0
+    let newAreas = this.state.areas.map((area, index) => {
+      if (area.name !== this.state.selectedArea.name) {
+        return area
+      }
+      i = index;
+      return {
+        ...area,
+        ...update
+      }
+    })
     this.setState({
-      imgUrls: imgUrls
+      areas: newAreas,
+      selectedArea: newAreas[i]
+    })
+  }
+
+  uploadImage = (imgUrl) => {
+    this.setPropOnSelectedArea({imgUrl})
+  }
+
+  colorSelected = (backgroundColor) => {
+    this.setPropOnSelectedArea({
+      backgroundColor
     })
   }
 
   render() {
-    const {selectedSection, showTemplate} = this.state
-    const selectedId = selectedSection && selectedSection.id
-    let areas = []
-    let areaNames = [
-      'right-arm-L',
-      'right-arm-B',
-      'right-arm-R',
-      'right-arm-F',
-      'left-arm-L',
-      'left-arm-B',
-      'left-arm-R',
-      'left-arm-F',
-    ]
-    for(let i = 0; i < 8; i++) {
-      let offset = i > 3 ? 44 : 19; 
-      let name = areaNames[i]
-      areas.push(<SelectionArea imgUrl={this.state.imgUrls[name]} key={name} selected={selectedId === name} id={name} onClick={this.selectArea} left={66*i+offset} top={355} width={64} height={128} />)
-    }
+    const {selectedArea, showTemplate} = this.state
+    
 
-    areas = areas.concat([
-      <SelectionArea key='DOWN' imgUrl={this.state.imgUrls['DOWN']} selected={selectedId === "DOWN"} id="DOWN" onClick={this.selectArea} left={231} top={204} width={128} height={64} />,
-      <SelectionArea key='UP' imgUrl={this.state.imgUrls['UP']} selected={selectedId === "UP"} id="UP" onClick={this.selectArea} left={231} top={8} width={128} height={64} />,
-          
-      <SelectionArea key='FRONT' imgUrl={this.state.imgUrls['FRONT']} selected={selectedId === "FRONT"} id="FRONT" onClick={this.selectArea} left={231} top={74} width={128} height={128} />,
-      <SelectionArea key='BACK' imgUrl={this.state.imgUrls['BACK']} selected={selectedId === "BACK"} id="BACK" onClick={this.selectArea} left={427} top={74} width={128} height={128} />,
-          
-      <SelectionArea key='R' imgUrl={this.state.imgUrls['R']} selected={selectedId === "R"} id="R" onClick={this.selectArea} left={165} top={74} width={64} height={128} />,
-      <SelectionArea key='L' imgUrl={this.state.imgUrls['L']} selected={selectedId === "L"} id="L" onClick={this.selectArea} left={361} top={74} width={64} height={128} />
-    ])
 
+    const areas = this.state.areas.map((area) => <SelectionArea 
+      data={area}
+      key={area.name} 
+      selected={selectedArea && selectedArea.name === area.name} 
+      onClick={this.selectArea} 
+      />)
 
     return (
       <div className="App">
-        <Sidebar onUploadImage={this.uploadImage} downloadImage={this.downloadImage} selectedArea={selectedId} />
+        <Sidebar 
+          onUploadImage={this.uploadImage} 
+          onColorSelected={this.colorSelected} 
+          downloadImage={this.downloadImage} 
+          data={selectedArea} 
+        />
         <div className="image-container">
           <img src={template} alt="" id="templateImage" onClick={this.clearSelection} className={!showTemplate ? 'hidden' : ''} />
           {areas}

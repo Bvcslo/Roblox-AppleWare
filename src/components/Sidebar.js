@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { SketchPicker } from 'react-color';
 
 class Sidebar extends Component {
     fileSelected = (ev) => {
@@ -15,11 +16,20 @@ class Sidebar extends Component {
         reader.readAsDataURL(ev.currentTarget.files[0]);
       }
 
-    render() {
-        const {selectedArea} = this.props;
+    handleColorSelected = (color, event) => {
+        this.props.onColorSelected(color.hex)
+      };
 
+    handleClearColor = () => {
+        this.props.onColorSelected(null)
+    }
+
+    render() {
+        const {data} = this.props;
+        
         let contents = <div>Click on a shirt area to edit</div>
-        if(selectedArea) {
+        if(data) {
+            console.log('bg', data)
             contents = (<div className="sidebar-main"> 
                     <div className="sidebar-area">
                         <h3>Image</h3>
@@ -28,11 +38,13 @@ class Sidebar extends Component {
 
                     <div className="sidebar-area">
                         <h3>Background</h3>
-                       <select>
-                           <option>White</option>
-                           <option>Black</option>
-                           <option>Gray</option>
-                       </select>
+                       
+                       
+                       <SketchPicker 
+                        color={ data.backgroundColor || 'transparent' }
+                        onChangeComplete={ this.handleColorSelected }
+                       />
+                       <button onClick={this.handleClearColor}>Clear Color</button>
                     </div>
 
                     <div className="sidebar-area">
@@ -48,7 +60,7 @@ class Sidebar extends Component {
             <div className="sidebar">
                 
                 <h2 className="section">
-                    {selectedArea ? `Editing ${selectedArea}` : 'Roblox Shirt Creator'}
+                    {data ? `Editing ${data.name}` : 'Roblox Shirt Creator'}
                 </h2>
 
                 
