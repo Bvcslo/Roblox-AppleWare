@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import template from './images/shirt-template.png';
+import logo from './images/logo.svg';
 import './App.css';
 import { toJpeg } from 'html-to-image';
 import download from 'downloadjs';
@@ -159,16 +160,48 @@ class App extends Component {
 
     return (
       <div className="App">
-        <Sidebar 
-          onUploadImage={this.uploadImage} 
-          onColorSelected={this.colorSelected} 
-          downloadImage={this.downloadImage} 
-          data={selectedArea} 
-        />
-        <div className="image-container">
-          <img src={template} alt="" id="templateImage" onClick={this.clearSelection} className={!showTemplate ? 'hidden' : ''} />
-          {areas}
+        
+        <div className="header">
+         
+          <ul className="flex">
+            <li className="logo">
+              <a className="logo" href="#">
+                <img src={logo} alt="" />
+              </a>
+              <div className="logo" />
+            </li>
+            <li>
+                <a href="/">Shirt Creator</a>
+            </li>
+            <li>
+                <a href="/about">About</a>
+            </li>
+            <li>
+                <a href="/donate">Donate</a>
+            </li>
+          </ul>
         </div>
+
+        <div className="content">
+        
+          <div className="flex">
+            <Sidebar 
+              onUploadImage={this.uploadImage} 
+              onColorSelected={this.colorSelected} 
+              downloadImage={this.downloadImage} 
+              data={selectedArea} 
+            />
+            <div className="image-container">
+              <img src={template} alt="" id="templateImage" onClick={this.clearSelection} className={!showTemplate ? 'hidden' : ''} />
+              {areas}
+            </div>
+          </div>
+
+
+        </div>
+
+        
+        
 
         
         
