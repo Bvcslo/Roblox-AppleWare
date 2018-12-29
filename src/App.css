@@ -29,8 +29,14 @@ body {
   padding:0!important
 }
 
-.App {
-  
+button {
+  border: 1px solid transparent;
+  background-color: #00A2FF;
+  border-color: #00A2FF;
+  color: #fff;
+  font-weight: 400;
+  border-radius:3px;
+  padding:3px;
 }
 
 a, a:hover, a:visited, a:active {
@@ -55,7 +61,7 @@ li {
   max-width: 1338px;
   background-color: #E3E3E3;
   padding-top: 12px;
-  margin: 0 auto; 
+  margin: 20px; 
 }
 
 .App-logo {
@@ -106,25 +112,62 @@ li {
   opacity: 0;
 }
 
-.sidebar {
-  width: 250px;
-  background-color: black;
-  color: white;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between
+body {
+  color: #191919;
+  font-family: "Source Sans Pro",Arial,Helvetica,sans-serif;
 }
 
-.sidebar-main {
+.headline {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1em;
+  margin: 0;
+  padding: 5px 0;
+}
+
+.panel {
+  background-color: #fff;
+  padding:10px;
+}
+
+
+.sidebar {
+  width: 250px;
+}
+
+.sidebar-area {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #cecece;
+  padding-bottom:20px;
+}
+
+.flex-col {
+  display:flex;
+  flex-direction:column;
+}
+
+.h-full {
   flex-grow: 2;
+}
+.center {
+  align-self: center;
+}
+
+h3 {
+  margin-top:0;
+  font-size:1.1em;
+  font-weight:300;
 }
 
 .primary-button {
-  margin: 20px;
-  width: 210px;
-  height: 30px;
-  border-radius: 5px;
-  font-size: 14px;
-  background: rgb(255,184,0);
-  border: none;
+  padding: 12px;
+  font-size: 21px;
+  border-radius:5px;
+  background-color: #02b757;
+  border-color: #02b757;
+  color: #fff;
+}
+
+.draggable:hover {
+  cursor:grab;
 }

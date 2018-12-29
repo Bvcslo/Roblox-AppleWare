@@ -1,93 +1,23 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import template from './images/shirt-template.png';
-import logo from './images/logo.svg';
 import './App.css';
 import { toJpeg } from 'html-to-image';
 import download from 'downloadjs';
 import SelectionArea from './components/SelectionArea';
 import Sidebar from './components/Sidebar';
+import Navigation from './components/Navigation';
+import areaData from './areaData';
 
 class App extends Component {
   constructor(props) {
     super(props)
 
-    let areaNames = [
-      'right-arm-L',
-      'right-arm-B',
-      'right-arm-R',
-      'right-arm-F',
-      'left-arm-L',
-      'left-arm-B',
-      'left-arm-R',
-      'left-arm-F',
-    ]
-    let areas = [];
-
-    for(let i = 0; i < areaNames.length; i++) {
-      let offset = i > 3 ? 44 : 19; 
-      let name = areaNames[i]
-      areas.push({
-        name:name,
-        left: 66*i+offset, 
-        top: 355, 
-        width:64, 
-        height:128
-      })
-    }
-    
-    areas = areas.concat([
-      {
-        name: 'DOWN',
-        left:231,
-        top:204, 
-        width:128, 
-        height:64
-      },
-      {
-        name: 'UP',
-        left:231,
-        top:8, 
-        width:128, 
-        height:64
-      },
-      {
-        name: 'FRONT',
-        left:231,
-        top:74, 
-        width:128, 
-        height:128
-      },
-      {
-        name: 'BACK',
-        left:427,
-        top:74, 
-        width:128, 
-        height:128
-      },
-      {
-        name: 'R',
-        left:165,
-        top:74, 
-        width:64, 
-        height:128
-      },
-      {
-        name: 'L',
-        left:361,
-        top:74, 
-        width:64, 
-        height:128
-      }
-    ])
-
     this.state = {
       selectedArea: null,
       showTemplate: true,
-      areas: areas
+      areas: areaData
     }
-
-
   }
 
   selectArea = (areaId) => {
@@ -146,11 +76,15 @@ class App extends Component {
     })
   }
 
+  onTextChange = (text) => {
+    console.log(text)
+    this.setPropOnSelectedArea({
+      text
+    })
+  }
+
   render() {
     const {selectedArea, showTemplate} = this.state
-    
-
-
     const areas = this.state.areas.map((area) => <SelectionArea 
       data={area}
       key={area.name} 
@@ -160,35 +94,14 @@ class App extends Component {
 
     return (
       <div className="App">
-        
-        <div className="header">
-         
-          <ul className="flex">
-            <li className="logo">
-              <a className="logo" href="#">
-                <img src={logo} alt="" />
-              </a>
-              <div className="logo" />
-            </li>
-            <li>
-                <a href="/">Shirt Creator</a>
-            </li>
-            <li>
-                <a href="/about">About</a>
-            </li>
-            <li>
-                <a href="/donate">Donate</a>
-            </li>
-          </ul>
-        </div>
-
+        <Navigation />
         <div className="content">
-        
           <div className="flex">
             <Sidebar 
               onUploadImage={this.uploadImage} 
               onColorSelected={this.colorSelected} 
               downloadImage={this.downloadImage} 
+              onTextChange={this.onTextChange}
               data={selectedArea} 
             />
             <div className="image-container">
@@ -196,19 +109,10 @@ class App extends Component {
               {areas}
             </div>
           </div>
-
-
         </div>
-
-        
-        
-
-        
-        
       </div>
     );
   }
 }
-
 
 export default App;

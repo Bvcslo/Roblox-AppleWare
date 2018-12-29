@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SketchPicker } from 'react-color';
+import ColorPicker from './ColorPicker';
 
 class Sidebar extends Component {
     fileSelected = (ev) => {
@@ -17,20 +17,26 @@ class Sidebar extends Component {
       }
 
     handleColorSelected = (color, event) => {
-        this.props.onColorSelected(color.hex)
-      };
+        this.props.onColorSelected(color)
+    };
+
 
     handleClearColor = () => {
         this.props.onColorSelected(null)
     }
 
+    handleTextChange = (ev) => {
+        this.props.onTextChange(ev.currentTarget.value)
+    };
+
     render() {
         const {data} = this.props;
         
-        let contents = <div>Click on a shirt area to edit</div>
+        let contents = <div className="h-full">Click on a shirt area to edit</div>
         if(data) {
-            console.log('bg', data)
-            contents = (<div className="sidebar-main"> 
+            contents = (
+            
+                <div className="sidebar-main h-full"> 
                     <div className="sidebar-area">
                         <h3>Image</h3>
                         <input type="file" id="files" onChange={this.fileSelected} />
@@ -38,37 +44,38 @@ class Sidebar extends Component {
 
                     <div className="sidebar-area">
                         <h3>Background</h3>
-                       
-                       
-                       <SketchPicker 
+                       <ColorPicker 
                         color={ data.backgroundColor || 'transparent' }
-                        onChangeComplete={ this.handleColorSelected }
+                        onChange={ this.handleColorSelected }
                        />
                        <button onClick={this.handleClearColor}>Clear Color</button>
                     </div>
 
                     <div className="sidebar-area">
                         <h3>Text</h3>
-                        <input type="text" placeholder="Enter text"></input>
+                        <input 
+                            type="text" 
+                            value={data.text || ''} 
+                            onChange={this.handleTextChange} 
+                            placeholder="Enter text" 
+                        />
+                        {/* <input type="text" value={this.state.value} onChange={this.handleChange} /> */}
                     </div>
-
-                
-                </div>)
+                </div>
+                )
         }
         
         return (
-            <div className="sidebar">
+            <div className="sidebar flex-col">
                 
-                <h2 className="section">
+                <h3 className="headline">
                     {data ? `Editing ${data.name}` : 'Roblox Shirt Creator'}
-                </h2>
-
-                
-                 {contents}
-                
-
-                <div className="flex-end">
-                    <button className="primary-button" onClick={this.props.downloadImage}>Download Image</button>
+                </h3>
+                <div className="panel h-full flex-col">
+                    {contents}
+                    <div className="flex-end center">
+                        <button className="primary-button" onClick={this.props.downloadImage}>Download Image</button>
+                    </div>
                 </div>
             </div>
         )
