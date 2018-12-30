@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import ColorPicker from './ColorPicker';
 
+const fontFamilies = [
+    'Source Sans Pro',
+    'Arial',
+    'Verdana',
+    'Bookman Old Style',
+    'Comic Sans MS'
+]
 class Sidebar extends Component {
     fileSelected = (ev) => {
         if(!ev.currentTarget.files.length)
@@ -17,35 +24,63 @@ class Sidebar extends Component {
         };
       }
 
-    handleColorSelected = (color, event) => {
-        this.props.onColorSelected(color)
+    handleColorSelected = (backgroundColor, event) => {
+        this.props.updateData({
+            backgroundColor 
+        })
     };
 
-
     handleClearColor = () => {
-        this.props.onColorSelected(null)
+        this.props.updateData({
+            backgroundColor: null
+        })
     }
 
     handleTextChange = (ev) => {
-        this.props.onTextChange(ev.currentTarget.value)
-    };
+        this.props.updateData({
+            text: ev.currentTarget.value
+        })
+    }
+
+    handleTextSizeChange = (ev) => {
+        this.props.updateData({
+            fontSize: ev.currentTarget.value
+        })
+    }
 
     handleImageSizeChange = (ev) => {
-        this.props.onImageSizeChange(ev.currentTarget.value)
+        this.props.updateData({
+            imageSize: ev.currentTarget.value
+        })
     }
 
-    componentDidUpdate() {
-        const {data} = this.props;
-        let uploader = document.getElementById('sidebarImageUploader')
-            
-        if(data && data.imageFileList) {
-            uploader.files = data.imageFileList
-        }
+    handleTextColorSelected = (textColor) => {
+        this.props.updateData({
+            textColor
+        })
     }
+
+    handleFontFamilyChange = (ev) => {
+        this.props.updateData({
+            fontFamily: ev.currentTarget.value
+        })
+    }
+
+
+
+    // componentDidUpdate() {
+    //     const {data} = this.props;
+    //     let uploader = document.getElementById('sidebarImageUploader')
+            
+    //     if(data && data.imageFileList) {
+    //         uploader.files = data.imageFileList
+    //     }
+    // }
 
     render() {
         const {data} = this.props;
-        
+        let fontFamilyOptions = fontFamilies.map((fam)=><option key={fam} value={fam}>{fam}</option>)
+
         let contents = <div className="h-full">Click on a shirt area to edit</div>
         if(data) {
             contents = (                
@@ -86,7 +121,32 @@ class Sidebar extends Component {
                             onChange={this.handleTextChange} 
                             placeholder="Enter text" 
                         />
-                        {/* <input type="text" value={this.state.value} onChange={this.handleChange} /> */}
+                        {
+                            data.text ? (
+                                <div className="flex" style={{paddingTop:'5px'}}>
+                                    <div className="tile">
+                                    <select value={data.fontSize || '16px'} onChange={this.handleTextSizeChange}>
+                                        <option value="16px">16px</option>
+                                        <option value="24px">24px</option>
+                                        <option value="32px">32px</option>
+                                        <option value="48px">48px</option>
+                                        <option value="60px">60px</option>
+                                    </select>
+                                    </div>
+                                    <div className="tile">
+                                        <ColorPicker 
+                                            color={ data.textColor || '#000000' }
+                                            onChange={ this.handleTextColorSelected }
+                                        />
+                                    </div>
+                                    <div className="tile">
+                                        <select value={data.fontFamily} onChange={this.handleFontFamilyChange}>
+                                            {fontFamilyOptions}
+                                        </select>
+                                    </div>
+                                </div>
+                            ) : null
+                        }
                     </div>
                 </div>
                 )

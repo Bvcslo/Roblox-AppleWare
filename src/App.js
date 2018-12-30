@@ -73,19 +73,12 @@ class App extends Component {
     })
   }
 
-  colorSelected = (backgroundColor) => {
-    this.setPropOnSelectedArea({
-      backgroundColor
-    })
+  updateData = (updates) => {
+    this.setPropOnSelectedArea(updates)
   }
 
-  onTextChange = (text) => {
-    this.setPropOnSelectedArea({
-      text
-    })
-  }
-
-  onImageSizeChange = (imageSize) => {
+  onImageSizeChange = (ev) => {
+    const imageSize = ev.currentTarget.value;
     this.setPropOnSelectedArea({
       imageSize
     })
@@ -106,11 +99,9 @@ class App extends Component {
         <div className="content">
           <div className="flex">
             <Sidebar 
+              updateData={this.updateData}
               onUploadImage={this.uploadImage} 
-              onColorSelected={this.colorSelected} 
               downloadImage={this.downloadImage} 
-              onTextChange={this.onTextChange}
-              onImageSizeChange={this.onImageSizeChange}
               data={selectedArea} 
             />
             <div className="image-container">

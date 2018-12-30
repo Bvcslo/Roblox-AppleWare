@@ -1,13 +1,31 @@
 import React, { Component } from 'react';
 import Draggable from 'react-draggable';
 
-function getImageSizeStyle(imageSizeProp) {
-    switch(imageSizeProp) {
+function getImageStyle(data) {
+    if(!data)
+        return
+    
+    let imageSizeStyle = {maxWidth:'100%'}
+    switch(data.imageSize) {
         case 'height':
-            return {maxHeight:'100%'}
+        imageSizeStyle = {maxHeight:'100%'}
+            break;
         default :
-            return {maxWidth:'100%'}
-        }   
+        imageSizeStyle = {maxWidth:'100%'}
+        } 
+        
+    return Object.assign({}, imageSizeStyle)
+}
+
+function getTextStyle(data) {
+    if(!data)
+        return
+
+    const size = {fontSize: data.fontSize}
+    const color = {color: data.textColor}
+    const fontFamily = {fontFamily: data.fontFamily}
+
+    return Object.assign({}, size, color, fontFamily)
 }
 
 class SelectionArea extends Component {
@@ -22,8 +40,9 @@ class SelectionArea extends Component {
         const { data }= this.props
         const {left, top, width, height, id, imgUrl, backgroundColor, text} = this.props.data
         const { selected } = this.props;
-        const imageSizeStyle = getImageSizeStyle(data.imageSize)
-        const imageStyle = Object.assign({}, imageSizeStyle)
+
+        const imageStyle = getImageStyle(data)
+        const textStyle = getTextStyle(data)
 
         return (
             <div className={`shirt-section ${selected ? 'selected' : ''}`} 
@@ -41,7 +60,7 @@ class SelectionArea extends Component {
             {imgUrl ? (<Draggable>
                             <img className="draggable" draggable="false" id="image" alt="" src={imgUrl} style={imageStyle} />
                         </Draggable>) : null}
-            {text ? <Draggable><div className="draggable">{text}</div></Draggable> : null}
+            {text ? <Draggable><div className="draggable" style={textStyle}>{text}</div></Draggable> : null}
             </div>
         )
         }
