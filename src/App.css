@@ -155,11 +155,16 @@ body {
 
 h3 {
   margin-top:0;
+  margin-bottom:5px;
   font-size:1.1em;
   font-weight:300;
 }
 
-.primary-button {
+button:hover {
+  cursor:pointer;
+}
+
+.btn-primary {
   padding: 12px;
   font-size: 21px;
   border-radius:5px;
@@ -168,6 +173,39 @@ h3 {
   color: #fff;
 }
 
+.btn-tertiary {
+    border: 1px solid #777;
+    padding: 0 6px;
+    color: #000;
+    text-decoration: none;
+    background-color: #ccc;
+    font-weight: normal;
+}
+
 .draggable:hover {
   cursor:grab;
+}
+
+.file-input {
+  position:relative;
+}
+
+.file-input button {
+  width:100%;
+}
+
+.file-input input {
+  opacity: 0;
+  position:absolute;
+}
+
+.file-input input:hover {
+  cursor: pointer;
+} 
+
+input.text-input {
+  display:inline-block;
+  box-sizing: border-box;
+  width:100%;
+  padding:3px 5px;
 }

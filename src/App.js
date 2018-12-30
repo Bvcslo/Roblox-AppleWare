@@ -66,8 +66,11 @@ class App extends Component {
     })
   }
 
-  uploadImage = (imgUrl) => {
-    this.setPropOnSelectedArea({imgUrl})
+  uploadImage = (imgUrl, imageFileList) => {
+    this.setPropOnSelectedArea({
+      imgUrl,
+      imageFileList
+    })
   }
 
   colorSelected = (backgroundColor) => {
@@ -77,9 +80,14 @@ class App extends Component {
   }
 
   onTextChange = (text) => {
-    console.log(text)
     this.setPropOnSelectedArea({
       text
+    })
+  }
+
+  onImageSizeChange = (imageSize) => {
+    this.setPropOnSelectedArea({
+      imageSize
     })
   }
 
@@ -102,6 +110,7 @@ class App extends Component {
               onColorSelected={this.colorSelected} 
               downloadImage={this.downloadImage} 
               onTextChange={this.onTextChange}
+              onImageSizeChange={this.onImageSizeChange}
               data={selectedArea} 
             />
             <div className="image-container">
