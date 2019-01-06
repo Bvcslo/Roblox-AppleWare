@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import template from './images/shirt-template.png';
+import evan from './images/evan.jpg';
+
 import './App.css';
 import { toJpeg } from 'html-to-image';
 import download from 'downloadjs';
@@ -8,8 +10,10 @@ import SelectionArea from './components/SelectionArea';
 import Sidebar from './components/Sidebar';
 import Navigation from './components/Navigation';
 import areaData from './areaData';
+import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
+ 
 
-class App extends Component {
+class ShirtCreator extends Component {
   constructor(props) {
     super(props)
 
@@ -94,25 +98,70 @@ class App extends Component {
       />)
 
     return (
-      <div className="App">
-        <Navigation />
-        <div className="content">
-          <div className="flex">
-            <Sidebar 
-              updateData={this.updateData}
-              onUploadImage={this.uploadImage} 
-              downloadImage={this.downloadImage} 
-              data={selectedArea} 
-            />
-            <div className="image-container">
-              <img src={template} alt="" id="templateImage" onClick={this.clearSelection} className={!showTemplate ? 'hidden' : ''} />
-              {areas}
-            </div>
-          </div>
+      <div className="contents">
+      <div className="flex">
+        <Sidebar 
+          updateData={this.updateData}
+          onUploadImage={this.uploadImage} 
+          downloadImage={this.downloadImage} 
+          data={selectedArea} 
+        />
+        <div className="image-container">
+          <img src={template} alt="" id="templateImage" onClick={this.clearSelection} className={!showTemplate ? 'hidden' : ''} />
+          {areas}
         </div>
+      </div>
       </div>
     );
   }
+}
+ 
+const About = () => {
+  return (
+  <div style={{background:'white', padding:20, height:'100%'}}>
+    <div style={{minHeight:600, maxWidth:650}}>
+    <h1>About Me</h1>
+      
+      <img src={evan} style={{width:200, paddingRight: 20}} alt="Evan" className="float-l" />
+      <p>
+        Hi! My name is Evan Weinberg. I love playing Roblox with my friends. A LOT. 
+      </p>
+      <p> 
+        I got builder's club, so I can make shirts for our group. But the tools to make shirts were hard to use.
+        I couldn't find anything that made it easier, so i decided to build my own tool.
+      </p>
+      <p>
+        Roblox Shirt Creator lets you
+          upload images and automatically size by shirt area
+          set Background color
+          add text, with different fonts and colors
+          drag images and text around.
+      </p>
+      <p>
+        I hope it's useful for everyone. I'll keep working to make it better. If you're a coder and want to help,
+        Roblox Shirt Creator is on github at: 
+        <br /><br/>
+        <a href="https://github.com/crinjely/roblox-shirt-generator">https://github.com/crinjely/roblox-shirt-generator</a>
+      </p>
+    </div>
+  </div>
+    
+  
+  );
+}
+
+const App = () => {
+  return (
+    <div className="App">
+        <Navigation />
+        <Router>
+          <React.Fragment>
+            <Route exact path="/" component={ShirtCreator} />
+            <Route exact path="/about" component={About} />
+          </React.Fragment>
+        </Router>
+    </div>
+  );
 }
 
 export default App;

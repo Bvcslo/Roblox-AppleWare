@@ -43,12 +43,12 @@ a, a:hover, a:visited, a:active {
   text-decoration: none;
 }
 
-ul {
+ul.no-decor {
   margin:0;
   padding:0;
 }
 
-li {
+ul.no-decor li {
   list-style-type: none;
   padding: 4px 5px;
 }
@@ -58,11 +58,12 @@ li {
   flex-wrap: wrap;
 }
 
-.content {
-  max-width: 1338px;
-  background-color: #E3E3E3;
-  padding-top: 12px;
-  margin: 20px; 
+.padded {
+  padding: 20px; 
+}
+
+.float-l {
+  float:left;
 }
 
 .App-logo {
@@ -218,4 +219,14 @@ input.text-input {
 
 .tile:first-child {
   padding-left:0;
+}
+
+.panel {
+  padding:20px;
+  background: #fff;
+}
+
+.contents {
+  width: 850px;
+  padding:20px;
 }

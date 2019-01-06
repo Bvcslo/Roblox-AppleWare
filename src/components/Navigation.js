@@ -5,7 +5,7 @@ const Navigation = () => {
     return (
         <div className="header">
          
-        <ul className="flex">
+        <ul className="flex no-decor">
           <li className="logo">
             <a className="logo" href="https://web.roblox.com/my/groups.aspx">
               <img src={logo} alt="" />
@@ -17,9 +17,6 @@ const Navigation = () => {
           </li>
           <li>
               <a href="/about">About</a>
-          </li>
-          <li>
-              <a href="/donate">Donate</a>
           </li>
         </ul>
       </div>
