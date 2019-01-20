@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from '../images/logo.svg';
+import {Link} from 'react-router-dom';
 
 const Navigation = () => {
     return (
@@ -13,10 +14,10 @@ const Navigation = () => {
             <div className="logo" />
           </li>
           <li>
-              <a href="/">Shirt Creator</a>
+              <Link to="/">Shirt Creator</Link>
           </li>
           <li>
-              <a href="/about">About</a>
+          <Link to="/about">About</Link>
           </li>
         </ul>
       </div>

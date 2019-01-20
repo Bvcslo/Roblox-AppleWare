@@ -124,7 +124,7 @@ const About = () => {
       
       <img src={evan} style={{width:200, paddingRight: 20}} alt="Evan" className="float-l" />
       <p>
-        Hi! My name is Evan Weinberg. I love playing Roblox with my friends. A LOT. 
+        Hi! My name is Evan Weinberg. I'm 10 years old. I love playing Roblox with my friends. A LOT. 
       </p>
       <p> 
         I got builder's club, so I can make shirts for our group. But the tools to make shirts were hard to use.
@@ -153,9 +153,10 @@ const About = () => {
 const App = () => {
   return (
     <div className="App">
-        <Navigation />
+        
         <Router>
           <React.Fragment>
+            <Navigation />
             <Route exact path="/" component={ShirtCreator} />
             <Route exact path="/about" component={About} />
           </React.Fragment>
