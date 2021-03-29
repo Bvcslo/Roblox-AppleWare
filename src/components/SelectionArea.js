@@ -24,8 +24,9 @@ function getTextStyle(data) {
     const size = {fontSize: data.fontSize}
     const color = {color: data.textColor}
     const fontFamily = {fontFamily: data.fontFamily}
+    const showWhitespaces = { "white-space": "pre" }
 
-    return Object.assign({}, size, color, fontFamily)
+    return Object.assign({}, size, color, fontFamily, showWhitespaces)
 }
 
 class SelectionArea extends Component {
